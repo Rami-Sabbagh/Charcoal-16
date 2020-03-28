@@ -34,6 +34,7 @@ function Charcoal:initialize()
 end
 
 function Charcoal:update(dt)
+    --if not love.keyboard.isDown("space") then return end
     self.clock = self.clock + dt
 
     local cyclesToExecute = math.floor(self.clock/self.cycleTime)
@@ -44,8 +45,8 @@ function Charcoal:update(dt)
     end
 end
 
-function Charcoal:draw()
-    self.display:draw(0,0, 512,512, self.memory, self.vramAddress)
+function Charcoal:draw(x,y, w,h)
+    self.display:draw(x,y, w,h, self.memory, self.vramAddress)
 end
 
 return Charcoal
