@@ -296,7 +296,7 @@ local instructionsBehaviour = {
     end,
 
     function(self, isRegister1, operand1, isRegister2, operand2) -- EXTI
-
+		print("EXTI", isRegister1 and self.registers[operand1] or operand1)
     end,
 
     function(self, isRegister1, operand1, isRegister2, operand2) -- EXTA
