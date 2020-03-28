@@ -1,5 +1,8 @@
 local libraryPath = string.sub((...), 1, -1-string.len(".display"))
 
+local bit = require("bit")
+local band, rshift = bit.band, bit.rshift
+
 --Require the object-oriented library
 local class = require(libraryPath..".middleclass")
 
@@ -24,6 +27,20 @@ function display:initialize(properties)
         end
     end
 
+    --An imagedata containing the palette
+    self.paletteImageData, self.palette = properties.palette, {}
+    for i=0, 15 do self.palette[i] = {0,0,0, 1} end
+    do
+        local nextID=0
+        self.paletteImageData:mapPixel(function(x,y, r,g,b,a)
+            if nextID < 16 then
+                self.palette[nextID] = {r,g,b, a}
+                nextID = nextID + 1
+            end
+            return r,g,b,a
+        end)
+    end
+
     --The resolution of the canvas
     self.width, self.height = self.characterWidth*self.columns, self.characterHeight*self.rows
 
@@ -32,19 +49,24 @@ function display:initialize(properties)
     self.canvas:setFilter("nearest")
 
     --The tint of the rendered display
-    self.tint = {0, 1, 0, 1}
+    self.tint = {1, 1, 1, 1}
 
     --Wrap render call
     self.wrappedRender = function() self:render(self.memory, self.startAddress) end
 end
 
 function display:render(memory, startAddress)
-    love.graphics.clear(0,0,0,1)
-    love.graphics.setColor(1,1,1,1)
-
     for j=0, self.rows-1 do
         for i=0, self.columns-1 do
-            local characterID = memory[startAddress+i+j*self.columns]
+            local characterAddress = startAddress + (i+j*self.columns)*2
+            local characterID = memory[characterAddress]
+            local attributes = memory[characterAddress+1]
+            local foreground, background = band(attributes, 0xF), rshift(attributes, 4)
+
+            love.graphics.setColor(self.palette[background])
+            love.graphics.rectangle("fill",i*self.characterWidth, j*self.characterHeight,
+                self.characterWidth, self.characterHeight)
+            love.graphics.setColor(self.palette[foreground])
             love.graphics.draw(self.font, self.charactersQuads[characterID], i*self.characterWidth, j*self.characterHeight)
         end
     end

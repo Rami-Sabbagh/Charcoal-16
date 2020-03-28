@@ -22,6 +22,7 @@ function Charcoal:initialize()
         rows = 28,
 
         font = love.graphics.newImage(libraryPath:gsub("%.", "/").."/font.png"),
+        palette = love.image.newImageData(libraryPath:gsub("%.", "/").."/palette.png")
     }
 
     --Temporary
