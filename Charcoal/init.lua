@@ -46,7 +46,7 @@ function Charcoal:update(dt)
 end
 
 function Charcoal:draw(x,y, w,h)
-    self.display:draw(x,y, w,h, self.memory, 0xF6CA, 0xFFFA)
+    self.display:draw(x,y, w,h, self.memory, 0xF6CA, 0xFFFA, 0xFFFB)
 end
 
 --[[

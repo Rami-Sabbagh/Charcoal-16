@@ -73,8 +73,10 @@ function display:render(memory, startAddress, attributesAddress)
     end
 end
 
-function display:draw(x, y, w, h, memory, startAddress, attributesAddress)
+function display:draw(x, y, w, h, memory, startAddress, attributesAddress, offsetAddress)
     self.memory, self.startAddress, self.attributesAddress = memory, startAddress, attributesAddress
+    self.startAddress = math.max(self.startAddress - memory[offsetAddress]*self.columns*2, 0)
+
     self.canvas:renderTo(self.wrappedRender)
 
     local attributes = memory[attributesAddress]
