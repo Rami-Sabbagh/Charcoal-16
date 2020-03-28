@@ -339,11 +339,7 @@ local function assembleLine(line)
             local parsed = {"DATA"} --Stored as the DATA instruction for simplicity
 
             local str = line:match("^%s-%S+%s-%S")
-            if str then
-                line:sub(#line:match("^%s-%S+%s-%S"), -1)
-            else
-                str = ""
-            end
+            str = str and line:sub(#str, -1) or ""
 
             for character in str:gmatch(".") do
                 table.insert(parsed, {1, string.byte(character)})
