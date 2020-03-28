@@ -1,2 +1,2 @@
 # Charcoal-16
- A fantasy console power by ASM-19
+ A fantasy console powered by ASM-19
