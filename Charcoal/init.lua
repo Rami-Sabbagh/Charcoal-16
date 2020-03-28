@@ -22,7 +22,7 @@ function Charcoal:initialize()
         rows = 28,
 
         font = love.graphics.newImage(libraryPath:gsub("%.", "/").."/font.png"),
-        palette = love.image.newImageData(libraryPath:gsub("%.", "/").."/palette.png")
+        palettes = love.image.newImageData(libraryPath:gsub("%.", "/").."/palettes.png")
     }
 
     --Temporary
@@ -31,7 +31,6 @@ function Charcoal:initialize()
     self.clock = 0
 
     self.memory = self.processor:getMemory()
-    self.vramAddress = 0
 end
 
 function Charcoal:update(dt)
@@ -41,13 +40,25 @@ function Charcoal:update(dt)
     local cyclesToExecute = math.floor(self.clock/self.cycleTime)
     self.clock = self.clock - cyclesToExecute*self.cycleTime
 
-    for i=1, cyclesToExecute do
+    for _=1, cyclesToExecute do
         self.processor:executeCycle()
     end
 end
 
 function Charcoal:draw(x,y, w,h)
-    self.display:draw(x,y, w,h, self.memory, self.vramAddress, self.vramAddress+42*28*2)
+    self.display:draw(x,y, w,h, self.memory, 0xF6CA, 0xFFFA)
 end
+
+--[[
+Memory Layout:
+--------------
+0x0000 -> Program start
+0xF6CA -> VRAM start
+0xFFFA -> Border color & palette ID
+0xFFFB -> VRAM offset
+0xFFFC & 0xFFFD -> Speaker frequency
+0xFFFE -> Gamepad 1
+0xFFFF -> Gamepad 2
+]]
 
 return Charcoal
