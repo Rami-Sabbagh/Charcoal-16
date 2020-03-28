@@ -18,22 +18,19 @@ function Charcoal:initialize()
     systemImage:close()
 
     self.display = Display {
-        width = 256,
-        height = 256,
-
         columns = 42,
         rows = 28,
 
         font = love.graphics.newImage(libraryPath:gsub("%.", "/").."/font.png"),
-
-        memory = self.processor:getMemory(),
-        firstAddress = 0
     }
 
     --Temporary
-    self.frequency = 1000 --1 MHz
+    self.frequency = 1000 --1 KHz
     self.cycleTime = 1/self.frequency
     self.clock = 0
+
+    self.memory = self.processor:getMemory()
+    self.vramAddress = 0
 end
 
 function Charcoal:update(dt)
@@ -48,7 +45,7 @@ function Charcoal:update(dt)
 end
 
 function Charcoal:draw()
-    self.display:draw()
+    self.display:draw(0,0, 512,512, self.memory, self.vramAddress)
 end
 
 return Charcoal
