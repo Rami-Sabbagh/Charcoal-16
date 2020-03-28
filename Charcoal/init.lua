@@ -13,7 +13,7 @@ local Charcoal = class("charcoal.Charcoal")
 function Charcoal:initialize()
     self.processor = Processor()
 
-    local systemImage = assert(io.open(love.filesystem.getWorkingDirectory().."/debug.bin", "rb"))
+    local systemImage = assert(love.filesystem.newFile("debug.bin", "r"))
     self.processor:loadImage(systemImage)
     systemImage:close()
 
