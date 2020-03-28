@@ -27,6 +27,11 @@ function display:initialize(properties)
         end
     end
 
+    --The memory table which contains the VRAM
+    self.memory = properties.memory
+    --The first address of the VRAM
+    self.firstAddress = properties.firstAddress
+
     --The canvas of the display
     self.canvas = love.graphics.newCanvas(self.width, self.height, { dpiscale=1 })
     self.canvas:setFilter("nearest")
@@ -39,11 +44,12 @@ function display:render()
     love.graphics.setCanvas(self.canvas)
 
     love.graphics.clear(0,0,0,1)
+    love.graphics.setColor(1,1,1,1)
 
     for j=0, self.rows-1 do
         for i=0, self.columns-1 do
-            love.graphics.setColor(1,1,1,1)
-            love.graphics.draw(self.font, self.charactersQuads[(i+j*self.columns)%256], i*self.characterWidth, j*self.characterHeight)
+            local characterID = self.memory[self.firstAddress+i+j*self.columns]
+            love.graphics.draw(self.font, self.charactersQuads[characterID], i*self.characterWidth, j*self.characterHeight)
         end
     end
 
