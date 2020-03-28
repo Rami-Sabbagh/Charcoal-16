@@ -1,4 +1,4 @@
-local libraryPath = string.sub((...), 1, -1-string.len(".display"))
+local libraryPath = string.sub((...), 1, -1-string.len(".processor"))
 
 --Require the object-oriented library
 local class = require(libraryPath..".middleclass")
@@ -318,8 +318,8 @@ function Processor:initialize()
     self.halt = false --Is the processor in the HALT state
 end
 
---Read a binary image of the memory from a file, doesn't close the file
-function Processor:readImage(file)
+--Load a binary image of the memory from a file, doesn't close the file
+function Processor:loadImage(file)
     local function nextByte()
         local char = file:read(1)
         return char and string.byte(char)
@@ -393,7 +393,7 @@ function Processor:executeCycle()
                 local offset = rshift(referenceByte, 3)
                 if offset > 15 then offset = -(32-offset) end
 
-                operand1 = self:getShort(math.max(math.min(self.registers[register]+offset, 0xFFFF), 0))
+                operand1 = math.max(math.min(self.registers[register]+offset, 0xFFFF), 0)
             end
         end
 
@@ -406,7 +406,7 @@ function Processor:executeCycle()
         end
     end
 
-    print("Instruction", instructionName, operand1Type, operand1, operand2Type, operand2)
+    --print("Instruction", instructionName, operand1Type, operand1, operand2Type, operand2)
 
     local skipPointerUpdate = instructionsBehaviour[instructionID+1](self, isRegister1, operand1, isRegister2, operand2, bytesRead)
     if not skipPointerUpdate then
