@@ -82,7 +82,13 @@ end
 local lineNumber, operandNumber, nextAddress = 0, 0, 0
 
 local program = {} --Contains the instructions and labels of the program we're compiling
-local labels = {}
+local labels = {
+	VRAM = {line=-1, address=0xF6CA},
+	VATTRIBUTES = {line=-1, address=0xFFFA},
+	VOFFSET = {line=-1, address=0xFFFB},
+	SPEAKER = {line=-1, address=0xFFFC},
+	GAMEPADS = {line=-1, address=0xFFFE}
+}
 local usedLabels = {}
 
 --== Assembler Functions ==--
