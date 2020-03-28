@@ -47,7 +47,7 @@ function Charcoal:update(dt)
 end
 
 function Charcoal:draw(x,y, w,h)
-    self.display:draw(x,y, w,h, self.memory, self.vramAddress)
+    self.display:draw(x,y, w,h, self.memory, self.vramAddress, self.vramAddress+42*28*2)
 end
 
 return Charcoal

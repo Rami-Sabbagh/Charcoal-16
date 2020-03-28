@@ -72,11 +72,14 @@ function display:render(memory, startAddress)
     end
 end
 
-function display:draw(x, y, w, h, memory, startAddress)
+function display:draw(x, y, w, h, memory, startAddress, attributesAddress)
     self.memory, self.startAddress = memory, startAddress
     self.canvas:renderTo(self.wrappedRender)
 
-    love.graphics.setColor(0,0,0, 1)
+    local attributes = memory[attributesAddress]
+    local border = band(attributes, 0xF)
+
+    love.graphics.setColor(self.palette[border])
     love.graphics.rectangle("fill", x, y, w, h)
 
     local scale = math.floor(math.min(w/self.width, h/self.height))
