@@ -406,8 +406,6 @@ function Processor:executeCycle()
         end
     end
 
-    --print("Instruction", instructionName, operand1Type, operand1, operand2Type, operand2)
-
     local skipPointerUpdate = instructionsBehaviour[instructionID+1](self, isRegister1, operand1, isRegister2, operand2, bytesRead)
     if not skipPointerUpdate then
         self.registers[6] = math.min(self.registers[6] + bytesRead, 0xFFFF) --Increase PP by the amount of bytes read
