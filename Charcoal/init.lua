@@ -5,6 +5,7 @@ local class = require(libraryPath..".middleclass")
 
 --Require the Charcoal modules
 local Display = require(libraryPath..".display")
+local Gamepad = require(libraryPath..".gamepad")
 local Processor = require(libraryPath..".processor")
 
 --The Charcoal class
@@ -17,12 +18,26 @@ function Charcoal:initialize()
     self.processor:loadImage(systemImage)
     systemImage:close()
 
-    self.display = Display {
+    self.display = Display{
         columns = 42,
         rows = 28,
 
         font = love.graphics.newImage(libraryPath:gsub("%.", "/").."/font.png"),
         palettes = love.image.newImageData(libraryPath:gsub("%.", "/").."/palettes.png")
+    }
+
+    self.gamepad1 = Gamepad{
+        keymap = {
+            --A, B, Start, Select, Up, Down, Left, Right
+            "z", "x", "c", "v", "up", "down", "left", "right"
+        }
+    }
+
+    self.gamepad2 = Gamepad{
+        keymap = {
+            --A, B, Start, Select, Up, Down, Left, Right
+            "kpenter", "kp+", "kp9", "kp*", "kp5", "kp2", "kp1", "kp3"
+        }
     }
 
     --Temporary
@@ -40,7 +55,12 @@ function Charcoal:update(dt)
     local cyclesToExecute = math.floor(self.clock/self.cycleTime)
     self.clock = self.clock - cyclesToExecute*self.cycleTime
 
+    local gamepadByte1 = self.gamepad1:getByte()
+    local gamepadByte2 = self.gamepad2:getByte()
+
     for _=1, cyclesToExecute do
+        self.memory[0xFFFE] = gamepadByte1
+        self.memory[0xFFFF] = gamepadByte2
         self.processor:executeCycle()
     end
 end
