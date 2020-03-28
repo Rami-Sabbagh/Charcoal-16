@@ -32,7 +32,7 @@ function display:initialize(properties)
     self.canvas:setFilter("nearest")
 
     --The tint of the rendered display
-    self.tint = {1, 1, 1, 1}
+    self.tint = {0, 1, 0, 1}
 end
 
 function display:render()
