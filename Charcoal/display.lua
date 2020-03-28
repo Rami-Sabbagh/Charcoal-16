@@ -54,6 +54,9 @@ function display:draw(x, y, w, h, memory, startAddress)
     self.memory, self.startAddress = memory, startAddress
     self.canvas:renderTo(self.wrappedRender)
 
+    love.graphics.setColor(0,0,0, 1)
+    love.graphics.rectangle("fill", x, y, w, h)
+
     local scale = math.floor(math.min(w/self.width, h/self.height))
 
     love.graphics.setColor(self.tint)
