@@ -131,17 +131,17 @@ local instructionsBehaviour = {
         end
     end,
 
-    function(self, isRegister1, operand1, isRegister2, operand2) -- 9 OR
+    function(self, isRegister1, operand1, isRegister2, operand2) -- 9 AND
         local value = isRegister2 and self.registers[operand2] or operand2
 
         if isRegister1 then
-            self.registers[operand1] = bor(self.registers[operand1], value)
+            self.registers[operand1] = band(self.registers[operand1], value)
         else
             self:setShort(operand1, band(self:getShort(operand1), value))
         end
     end,
 
-    function(self, isRegister1, operand1, isRegister2, operand2) -- 9 OR
+    function(self, isRegister1, operand1, isRegister2, operand2) -- 10 OR
         local value = isRegister2 and self.registers[operand2] or operand2
 
         if isRegister1 then
