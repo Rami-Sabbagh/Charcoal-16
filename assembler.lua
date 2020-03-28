@@ -54,7 +54,7 @@ local instructionsSet = {
     {"ADD", "SUB", "MUL", "DIV", "MOD", "SWIZ", "AND", "OR", "XOR", "SHL", "SHR", "SAR", "SET", "GET", "CMP"},
 
     --[4]: Special instructions
-    {"EXTA", "EXTB", "MARK", "NOTE", "DATA"}
+    {"EXTA", "EXTB", "MARK", "NOTE", "DATA", "DSTR"}
 }
 
 for itype, instructions in ipairs(instructionsSet) do
@@ -333,6 +333,22 @@ local function assembleLine(line)
             table.insert(program, parsed)
 
             nextAddress = nextAddress + operandNumber*2 --2 bytes for each value
+
+        elseif instruction == "DSTR" then
+
+            local parsed = {"DATA"} --Stored as the DATA instruction for simplicity
+
+            local str = line:sub(#line:match("^%s-%S+")+1, -1)
+
+            for character in str:gmatch(".") do
+                table.insert(parsed, {1, string.byte(character)})
+            end
+
+            table.insert(parsed, {1, 0}) -- null terminate the string
+
+            table.insert(program, parsed)
+
+            nextAddress = nextAddress + #str*2 + 2 --2 bytes for each character, +2 for the null terminator
 
         end
     end
