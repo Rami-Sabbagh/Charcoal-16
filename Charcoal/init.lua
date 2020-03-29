@@ -57,8 +57,9 @@ end
 function Charcoal:update(dt)
     local speakerShort = self.processor:getShort(0xFFFC)
     local speakerWaveform = rshift(speakerShort, 14)
-    local speakerSamplesForHalfwave = band(speakerShort, 0x3FFF)
-    self.speaker:update(dt, speakerWaveform, speakerSamplesForHalfwave)
+    local speakerVolume = band(rshift(speakerShort, 11), 0x3)
+    local speakerSamplesForHalfwave = band(speakerShort, 0x07FF)
+    self.speaker:update(dt, speakerWaveform, speakerSamplesForHalfwave, speakerVolume)
 
     --if not love.keyboard.isDown("space") then return end
     self.clock = self.clock + dt

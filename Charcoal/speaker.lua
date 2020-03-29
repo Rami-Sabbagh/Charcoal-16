@@ -54,12 +54,16 @@ function speaker:generateSoundData(waveform, samplesForHalfwave)
     return soundData
 end
 
-function speaker:update(dt, waveform, samplesForHalfwave)
+function speaker:update(dt, waveform, samplesForHalfwave, volume)
+    self.queueableSource:setVolume((1/8)*(volume+1))
+
     if waveform ~= self.waveform or self.samplesForHalfwave ~= samplesForHalfwave then
         self.waveform, self.samplesForHalfwave = waveform, samplesForHalfwave
         self.piecesToGenerate = self.buffercount
-        
-        self.queueableSource:stop()
+
+        if samplesForHalfwave == 0 then
+            self.queueableSource:stop()
+        end
     end
 
     if self.samplesForHalfwave == 0 then return end
