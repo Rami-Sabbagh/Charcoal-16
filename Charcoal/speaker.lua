@@ -11,10 +11,11 @@ local speaker = class("charcoal.Speaker")
 function speaker:initialize()
     self.sampleRate = 44100
     self.bitDepth = 8
-    self.buffercount = 8
-    self.preferredLength = (self.sampleRate/5)/self.buffercount
+    self.buffercount = 5
+    self.preferredLength = self.sampleRate/40
 
     self.queueableSource = love.audio.newQueueableSource(self.sampleRate, self.bitDepth, 1, self.buffercount)
+    self.queueableSource:setVolume(0.25)
 
     self.buffer = {}
     self.nextPieceID = 0
@@ -57,6 +58,8 @@ function speaker:update(dt, waveform, samplesForHalfwave)
     if waveform ~= self.waveform or self.samplesForHalfwave ~= samplesForHalfwave then
         self.waveform, self.samplesForHalfwave = waveform, samplesForHalfwave
         self.piecesToGenerate = self.buffercount
+        
+        self.queueableSource:stop()
     end
 
     if self.samplesForHalfwave == 0 then return end
