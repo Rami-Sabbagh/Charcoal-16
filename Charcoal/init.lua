@@ -1,5 +1,8 @@
 local libraryPath = ...
 
+local bit = require("bit")
+local band, rshift = bit.band, bit.rshift
+
 --Require the object-oriented library
 local class = require(libraryPath..".middleclass")
 
@@ -7,6 +10,7 @@ local class = require(libraryPath..".middleclass")
 local Display = require(libraryPath..".display")
 local Gamepad = require(libraryPath..".gamepad")
 local Processor = require(libraryPath..".processor")
+local Speaker = require(libraryPath..".speaker")
 
 --The Charcoal class
 local Charcoal = class("charcoal.Charcoal")
@@ -40,6 +44,8 @@ function Charcoal:initialize()
         }
     }
 
+    self.speaker = Speaker()
+
     --Temporary
     self.frequency = 1000000 --1 MHz
     self.cycleTime = 1/self.frequency
@@ -49,6 +55,11 @@ function Charcoal:initialize()
 end
 
 function Charcoal:update(dt)
+    local speakerShort = self.processor:getShort(0xFFFC)
+    local speakerWaveform = rshift(speakerShort, 14)
+    local speakerSamplesForHalfwave = band(speakerShort, 0x3FFF)
+    self.speaker:update(dt, speakerWaveform, speakerSamplesForHalfwave)
+
     --if not love.keyboard.isDown("space") then return end
     self.clock = self.clock + dt
 
