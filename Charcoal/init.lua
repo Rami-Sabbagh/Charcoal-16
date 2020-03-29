@@ -41,7 +41,7 @@ function Charcoal:initialize()
     }
 
     --Temporary
-    self.frequency = 1000 --1 KHz
+    self.frequency = 1000000 --1 MHz
     self.cycleTime = 1/self.frequency
     self.clock = 0
 
