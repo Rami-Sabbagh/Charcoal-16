@@ -340,6 +340,7 @@ local function assembleLine(line)
 
             local str = line:match("^%s-%S+%s-%S")
             str = str and line:sub(#str, -1) or ""
+            str = str:gsub("[\n\r]", "")
 
             for character in str:gmatch(".") do
                 table.insert(parsed, {1, string.byte(character)})
