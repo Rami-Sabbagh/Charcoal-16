@@ -290,7 +290,7 @@ local instructionsBehaviour = {
     end,
 
     function(self, isRegister1, operand1) -- JNE
-        if self.registers[4] ~= 0 then return end
+        if self.registers[4] == 0 then return end
         self.registers[6] = isRegister1 and self.registers[operand1] or operand1
         return true
     end,
