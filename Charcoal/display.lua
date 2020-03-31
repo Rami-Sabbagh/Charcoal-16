@@ -89,7 +89,7 @@ function display:draw(x, y, w, h, memory, startAddress, attributesAddress, offse
     love.graphics.setColor(self.tint)
     love.graphics.draw(self.canvas, x+(w-self.width*scale)/2, y+(h-self.height*scale)/2, 0, scale, scale)
 
-    --Set the VSYNC bit
+    --Set the VBLANK bit
     attributes = attributes + 0x80
     memory[attributesAddress] = attributes
 end
